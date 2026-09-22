@@ -1,0 +1,7 @@
+node_modules/
+.expo/
+.bundle-check/
+ios/
+android/
+coverage/
+*.log

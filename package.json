@@ -1,0 +1,36 @@
+{
+  "name": "heat-mapper-live",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Heat Mapper Live — Wi-Fi coverage and performance surveys, floor plans, AR heat maps and PDF reports.",
+  "main": "index.js",
+  "scripts": {
+    "start": "expo start --dev-client",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "test": "jest",
+    "bundle:check": "expo export --platform android --platform ios --output-dir .bundle-check",
+    "verify": "npm run typecheck && npm run lint && npm test"
+  },
+  "dependencies": {
+    "@op-engineering/op-sqlite": "^11.2.6",
+    "expo": "~52.0.0",
+    "expo-asset": "~11.0.5",
+    "expo-status-bar": "~2.0.1",
+    "react": "18.3.1",
+    "react-native": "0.76.6"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.5",
+    "@types/jest": "^29.5.14",
+    "@types/node": "^22.10.0",
+    "@types/react": "~18.3.12",
+    "eslint": "^9.39.5",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "typescript": "~5.6.3",
+    "typescript-eslint": "^8.70.0"
+  }
+}
