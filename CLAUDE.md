@@ -1,6 +1,6 @@
 # Heat Mapper Live
 
-iOS/Android app for Wi-Fi coverage and performance surveys, floor plans, AR heat maps and PDF reports. Paid through a monthly store subscription. Separate from the IRON Safeguard app in the parent directory: share nothing with it.
+iOS/Android app for Wi-Fi coverage and performance surveys, floor plans, AR heat maps and PDF reports. Paid through a monthly store subscription.
 
 Before any change, read this file, `docs/modules.md` and `docs/progress.md`, then open only the files involved. Build one stage at a time (see progress). "Next stage" means the next unfinished stage only. "Update module X" means changes stay in X plus any contract change it needs.
 

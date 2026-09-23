@@ -18,8 +18,8 @@
 - Migrations: v1 `initial`.
 
 ## Decisions
-- Lives in `heat-mapper/` inside the IRON repo for now, fully self-contained (own package, lockfile, lint, CI in `.github/workflows/heat-mapper.yml`); IRON's lint and branding audit skip this folder. It can move to its own repo without changes.
-- Kept IRON's stack versions (Expo 52, RN 0.76, op-sqlite 11) instead of upgrading.
+- Started inside the IRON repo by mistake and moved here with its history (Stage 0–1 commits). Shares nothing with IRON. CI: `.github/workflows/ci.yml`.
+- Stack pinned to Expo 52, RN 0.76, op-sqlite 11.
 - Metric values stored as rows with explicit units, so new metrics need no migration.
 - Freshness defaults: 2 s maximum age on receipt, 0.5 s clock skew. Revisit with probe cadence in Stage 5.
 - Location kinds are fixed to building/floor/room.
