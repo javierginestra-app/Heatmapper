@@ -15,3 +15,6 @@ export * from './contracts/reportExporter';
 export * from './contracts/settingsStore';
 export * from './contracts/surveyRepository';
 export * from './contracts/trackingProvider';
+export * from './locationTree';
+export * from './projectRules';
+export * from './contracts/projectRepository';

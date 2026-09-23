@@ -3,8 +3,8 @@
 | Stage | Module | Status |
 |---|---|---|
 | 0 | Foundation | Done — JS verified; not yet launched on a device |
-| 1 | Projects | Next |
-| 2 | Survey | — |
+| 1 | Projects | Done — JS verified; not yet exercised on a device |
+| 2 | Survey | Next |
 | 3A | Mapping: geometry | — |
 | 3B | Mapping: heat maps | — |
 | 4 | Reports | — |
@@ -26,5 +26,13 @@
 - Bundle id `app.heatmapperlive` is a placeholder until store registration (Stage 6).
 - Expo CLI logs "Using src/app as the root directory for Expo Router" because of the folder name. It is harmless while expo-router isn't installed. Use React Navigation (Stage 1), not expo-router.
 
-## Next: Stage 1 — Projects
-Implement the `SurveyRepository` project/location methods on SQLite, an ID generator (injected), and React Navigation with a project list, project detail with a Building → Floor → Room tree and breadcrumbs, create/edit/delete, offline autosave and a survey-history list. Gate: saved projects survive restart.
+## Stage 1 — Projects
+- Built: `ProjectRepository` on SQLite; project/location rules and tree helpers in core; projects module with list, project and location screens, Building → Floor → Room nesting (levels may be skipped, never inverted), tappable breadcrumbs, autosave (offline, debounced, flushed on leave/background), "Use current location" (expo-location, foreground only), per-project RSSI target, cascade-aware delete confirmations, survey history (scoped to a location and its descendants); capability screen moved behind the "Device" header button.
+- Contract change: `SurveyRepository` split. Project/location methods and `listSessionHistory` moved to the new `ProjectRepository`; `SurveyRepository` keeps sessions, series, gaps and samples (Stage 2).
+- Verified: `npm run verify` (88 tests, including the restart gate: a file database closed and reopened keeps projects and the tree) and `npm run bundle:check`.
+- Not verified on a device: navigation, keyboard handling, autosave timing, location permission prompt. Hardware check: create a project with nested locations, force-quit, relaunch and confirm everything is there; deny then allow location permission.
+- Migrations: none (schema v1 already had the tables).
+- Dependencies added: @react-navigation/native + native-stack, react-native-screens, react-native-safe-area-context, expo-crypto, expo-location (config plugin adds the when-in-use permission text).
+
+## Next: Stage 2 — Survey
+Implement `SurveyRepository` (sessions, series, gaps, `appendSamples` via `validateSampleBatch`, metric rows with units), the Android native RSSI adapter (Kotlin Expo module, connected-AP `WifiInfo.getRssi` at ≈1 Hz, fresh readings only), the owned-endpoint performance adapter (Wi-Fi required, byte cap, local vs internet), record/pause/resume with source and freshness display, manual map pins for positions, and capability probes registered in `container.ts`. Survey entry point goes on the Location screen.

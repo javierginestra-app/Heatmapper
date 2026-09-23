@@ -3,7 +3,12 @@ import { type SqlDriver, type SqlRow, type SqlValue } from '@/modules/storage/sq
 
 /** Node's built-in SQLite behind the same driver contract the app uses on device. */
 export function openMemoryDatabase(): SqlDriver & { raw: DatabaseSync } {
-  const raw = new DatabaseSync(':memory:');
+  return openDatabaseAt(':memory:');
+}
+
+/** A file-backed database, for tests that close and reopen it like an app restart. */
+export function openDatabaseAt(location: string): SqlDriver & { raw: DatabaseSync } {
+  const raw = new DatabaseSync(location);
   raw.exec('PRAGMA foreign_keys = ON');
   const execute = async (sql: string, params: readonly SqlValue[] = []) =>
     raw.prepare(sql).all(...params) as SqlRow[];

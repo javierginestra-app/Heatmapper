@@ -9,6 +9,12 @@ const config: ExpoConfig = {
   userInterfaceStyle: 'automatic',
   ios: { bundleIdentifier: 'app.heatmapperlive', supportsTablet: true },
   android: { package: 'app.heatmapperlive' },
+  plugins: [
+    [
+      'expo-location',
+      { locationWhenInUsePermission: 'Heat Mapper Live uses your location to tag a project with where it was surveyed.' },
+    ],
+  ],
 };
 
 export default config;

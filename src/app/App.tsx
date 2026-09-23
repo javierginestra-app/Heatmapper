@@ -1,14 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { SafeAreaView, ScrollView, StyleSheet, Text } from 'react-native';
-import { type CapabilityStatus } from '@/core';
-import { CapabilityList, detectCapabilities } from '@/modules/capabilities';
+import { StyleSheet, Text, View } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { colors, spacing } from '@/modules/ui';
-import { createContainer } from './container';
+import { createContainer, type Container } from './container';
+import { AppNavigation } from './navigation';
 
 type BootState =
   | { readonly status: 'loading' }
-  | { readonly status: 'ready'; readonly schemaVersion: number; readonly capabilities: readonly CapabilityStatus[] }
+  | { readonly status: 'ready'; readonly container: Container }
   | { readonly status: 'failed'; readonly message: string };
 
 export default function App() {
@@ -16,46 +16,34 @@ export default function App() {
 
   useEffect(() => {
     let cancelled = false;
-    (async () => {
-      const container = await createContainer();
-      const settings = await container.settings.get();
-      const capabilities = await detectCapabilities(
-        { platform: container.platform, settings },
-        container.capabilityProbes,
-      );
-      if (!cancelled) setState({ status: 'ready', schemaVersion: container.schemaVersion, capabilities });
-    })().catch((error: unknown) => {
-      if (!cancelled) setState({ status: 'failed', message: error instanceof Error ? error.message : String(error) });
-    });
+    createContainer()
+      .then((container) => !cancelled && setState({ status: 'ready', container }))
+      .catch((error: unknown) => {
+        if (!cancelled) setState({ status: 'failed', message: error instanceof Error ? error.message : String(error) });
+      });
     return () => {
       cancelled = true;
     };
   }, []);
 
   return (
-    <SafeAreaView style={styles.screen}>
+    <SafeAreaProvider>
       <StatusBar style="light" />
-      <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.title}>Heat Mapper Live</Text>
-        {state.status === 'loading' && <Text style={styles.muted}>Starting…</Text>}
-        {state.status === 'failed' && <Text style={styles.error}>Startup failed: {state.message}</Text>}
-        {state.status === 'ready' && (
-          <>
-            <Text style={styles.muted}>Local database ready (schema v{state.schemaVersion})</Text>
-            <Text style={styles.section}>Device capabilities</Text>
-            <CapabilityList statuses={state.capabilities} />
-          </>
-        )}
-      </ScrollView>
-    </SafeAreaView>
+      {state.status === 'ready' ? (
+        <AppNavigation container={state.container} />
+      ) : (
+        <View style={styles.boot}>
+          <Text style={state.status === 'failed' ? styles.error : styles.muted}>
+            {state.status === 'failed' ? `Startup failed: ${state.message}` : 'Starting…'}
+          </Text>
+        </View>
+      )}
+    </SafeAreaProvider>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.background },
-  content: { padding: spacing.lg, gap: spacing.md },
-  title: { color: colors.text, fontSize: 28, fontWeight: '700' },
-  section: { color: colors.text, fontSize: 18, fontWeight: '600', marginTop: spacing.md },
+  boot: { flex: 1, backgroundColor: colors.background, justifyContent: 'center', padding: spacing.lg },
   muted: { color: colors.textMuted, fontSize: 14 },
   error: { color: colors.danger, fontSize: 14 },
 });

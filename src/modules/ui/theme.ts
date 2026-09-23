@@ -6,7 +6,9 @@ export const colors = {
   border: '#2A333D',
   text: '#E8EDF2',
   textMuted: '#9AA6B2',
+  accent: '#3B9EFF',
   danger: '#ED1C24',
+  success: '#16A84A',
 } as const;
 
 export const spacing = { xs: 4, sm: 8, md: 12, lg: 16, xl: 24 } as const;
