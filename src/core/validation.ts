@@ -12,7 +12,9 @@ export type RejectionReason =
   | 'invalid_value'
   | 'stale'
   | 'future_timestamp'
-  | 'duplicate_id';
+  | 'duplicate_id'
+  /** Valid sample, but its session is not recording or its series does not match. */
+  | 'context_mismatch';
 
 export type Validated<T> =
   | { readonly ok: true; readonly value: T }

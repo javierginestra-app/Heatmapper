@@ -84,6 +84,16 @@ export function LocationScreen({ navigation, route }: ProjectsScreenProps<'Locat
           />
         </Section>
 
+        <Section title="Survey">
+          <Muted>Signal mode records RSSI; Performance mode tests throughput at marked points. They are kept separate.</Muted>
+          <Button title="Signal (RSSI) survey" onPress={() => navigation.navigate('Survey', { projectId, locationId, mode: 'signal' })} />
+          <Button
+            title="Performance survey"
+            variant="secondary"
+            onPress={() => navigation.navigate('Survey', { projectId, locationId, mode: 'performance' })}
+          />
+        </Section>
+
         <Section title="Survey history">
           <SessionHistory sessions={data.history} />
         </Section>

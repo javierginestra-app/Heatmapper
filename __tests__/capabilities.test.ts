@@ -28,7 +28,7 @@ describe('capability detection', () => {
     expect(probe).not.toHaveBeenCalled();
 
     const on = byId(
-      await detectCapabilities({ platform: 'ios', settings: { externalProbeEnabled: true } }, { external_probe: probe }),
+      await detectCapabilities({ platform: 'ios', settings: { ...DEFAULT_SETTINGS, externalProbeEnabled: true } }, { external_probe: probe }),
     );
     expect(on.external_probe).toMatchObject({ availability: 'available' });
   });

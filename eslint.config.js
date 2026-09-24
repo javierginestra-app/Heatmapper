@@ -8,7 +8,7 @@ module.exports = tseslint.config(
   ...tseslint.configs.recommended,
   {
     files: ['**/*.js'],
-    languageOptions: { sourceType: 'commonjs', globals: { require: 'readonly', module: 'writable', __dirname: 'readonly' } },
+    languageOptions: { sourceType: 'commonjs', globals: { require: 'readonly', module: 'writable', __dirname: 'readonly', process: 'readonly', console: 'readonly', Buffer: 'readonly', URL: 'readonly' } },
     rules: { '@typescript-eslint/no-require-imports': 'off' },
   },
   {

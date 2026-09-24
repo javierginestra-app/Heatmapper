@@ -4,3 +4,4 @@ export { runMigrations, type MigrationReport } from './migrations/runner';
 export { createSettingsStore } from './settingsStore';
 export type { SqlDriver, SqlRow, SqlValue } from './sqlDriver';
 export { createProjectRepository } from './projectRepository';
+export { createSurveyRepository } from './surveyRepository';

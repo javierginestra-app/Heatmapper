@@ -7,6 +7,7 @@ export * from './samples';
 export * from './series';
 export * from './settings';
 export * from './validation';
+export * from './wifi';
 export * from './policies/rssiPolicy';
 export * from './contracts/billingService';
 export * from './contracts/common';

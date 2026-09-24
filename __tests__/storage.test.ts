@@ -1,3 +1,4 @@
+import { DEFAULT_SETTINGS } from '@/core';
 import { runMigrations } from '@/modules/storage/migrations/runner';
 import { MIGRATIONS } from '@/modules/storage/migrations';
 import { createSettingsStore } from '@/modules/storage/settingsStore';
@@ -79,16 +80,21 @@ describe('settings store', () => {
   it('defaults the external probe to off and persists changes', async () => {
     const db = await migrated();
     const store = createSettingsStore(db);
-    expect(await store.get()).toEqual({ externalProbeEnabled: false });
-    await store.update({ externalProbeEnabled: true });
-    expect(await createSettingsStore(db).get()).toEqual({ externalProbeEnabled: true });
+    expect(await store.get()).toEqual(DEFAULT_SETTINGS);
+    expect(DEFAULT_SETTINGS.externalProbeEnabled).toBe(false);
+    await store.update({ externalProbeEnabled: true, localTestEndpoint: 'http://192.168.1.10:8787' });
+    expect(await createSettingsStore(db).get()).toEqual({
+      ...DEFAULT_SETTINGS,
+      externalProbeEnabled: true,
+      localTestEndpoint: 'http://192.168.1.10:8787',
+    });
   });
 
   it('ignores unknown keys and falls back on corrupt or mistyped values', async () => {
     const db = await migrated();
     await db.execute("INSERT INTO app_settings VALUES ('externalProbeEnabled', '\"yes\"')");
     const store = createSettingsStore(db);
-    expect(await store.get()).toEqual({ externalProbeEnabled: false });
+    expect(await store.get()).toEqual(DEFAULT_SETTINGS);
     await store.update({ bogus: 1 } as never);
     expect(await db.execute("SELECT key FROM app_settings WHERE key = 'bogus'")).toEqual([]);
   });

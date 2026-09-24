@@ -8,11 +8,12 @@ import {
   ProjectsServicesProvider,
   type ProjectsStackParamList,
 } from '@/modules/projects';
+import { SurveyScreen, SurveyServicesProvider, type SurveyStackParamList } from '@/modules/survey';
 import { colors } from '@/modules/ui';
 import { CapabilitiesScreen } from './CapabilitiesScreen';
 import { type Container } from './container';
 
-type RootStackParamList = ProjectsStackParamList & { Capabilities: undefined };
+type RootStackParamList = ProjectsStackParamList & SurveyStackParamList & { Capabilities: undefined };
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -24,27 +25,30 @@ const theme = {
 export function AppNavigation({ container }: { readonly container: Container }) {
   return (
     <ProjectsServicesProvider services={container}>
-      <NavigationContainer theme={theme}>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Projects"
-            component={ProjectListScreen}
-            options={({ navigation }) => ({
-              title: 'Heat Mapper Live',
-              headerRight: () => (
-                <Pressable accessibilityRole="button" onPress={() => navigation.navigate('Capabilities')} hitSlop={8}>
-                  <Text style={{ color: colors.accent }}>Device</Text>
-                </Pressable>
-              ),
-            })}
-          />
-          <Stack.Screen name="Project" component={ProjectScreen} options={{ title: '' }} />
-          <Stack.Screen name="Location" component={LocationScreen} options={{ title: '' }} />
-          <Stack.Screen name="Capabilities" options={{ title: 'Device capabilities' }}>
-            {() => <CapabilitiesScreen container={container} />}
-          </Stack.Screen>
-        </Stack.Navigator>
-      </NavigationContainer>
+      <SurveyServicesProvider services={container}>
+        <NavigationContainer theme={theme}>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Projects"
+              component={ProjectListScreen}
+              options={({ navigation }) => ({
+                title: 'Heat Mapper Live',
+                headerRight: () => (
+                  <Pressable accessibilityRole="button" onPress={() => navigation.navigate('Capabilities')} hitSlop={8}>
+                    <Text style={{ color: colors.accent }}>Device</Text>
+                  </Pressable>
+                ),
+              })}
+            />
+            <Stack.Screen name="Project" component={ProjectScreen} options={{ title: '' }} />
+            <Stack.Screen name="Location" component={LocationScreen} options={{ title: '' }} />
+            <Stack.Screen name="Survey" component={SurveyScreen} options={{ title: '' }} />
+            <Stack.Screen name="Capabilities" options={{ title: 'Device capabilities' }}>
+              {() => <CapabilitiesScreen container={container} />}
+            </Stack.Screen>
+          </Stack.Navigator>
+        </NavigationContainer>
+      </SurveyServicesProvider>
     </ProjectsServicesProvider>
   );
 }
