@@ -23,6 +23,7 @@
 - Metric values stored as rows with explicit units, so new metrics need no migration.
 - Freshness defaults: 2 s maximum age on receipt, 0.5 s clock skew. Revisit with probe cadence in Stage 5.
 - Location kinds are fixed to building/floor/room.
+- Device builds: `eas.json` has a `preview` profile (internal distribution, Android APK with the JS bundle embedded, so no Metro server is needed). Run `npx eas-cli build -p android --profile preview` after `eas init` links an Expo project. `npx expo prebuild -p android` succeeds and the generated manifest has cleartext traffic, fine location and autolinks `hm-android-wifi`; no Gradle build has run yet (the Android SDK is not installed in the cloud build environment).
 - Bundle id `app.heatmapperlive` is a placeholder until store registration (Stage 6).
 - Expo CLI logs "Using src/app as the root directory for Expo Router" because of the folder name. It is harmless while expo-router isn't installed. Use React Navigation (Stage 1), not expo-router.
 
